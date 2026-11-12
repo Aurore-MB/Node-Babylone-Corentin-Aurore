@@ -35,20 +35,6 @@ Le projet utilise Docker et Compose pour déployer l'application Node.js et Type
 
 - NB: pas besoin de `npm install` ou `npm run build` en local parce que Docker gère tout déjà
 
-# l'Architecture des fichiers actuels se présente comme suite :
-
-├── src/
-│   └── index.ts              # Code source TypeScript
-├── dist/                     # Code compilé (à ne pas committer) 
-├── Dockerfile                # Multi-stage build
-├── docker-compose.yaml       # Dev local 
-├── compose.production.yaml   # Production
-├── .dockerignore             # Exclusions du contexte build
-├── .env.example              # Template des variables (à committer)
-├── .env.production           # Configuration runtime (à ignorer)
-├── tsconfig.json             # Config TypeScript
-└── package.json              # Dépendances Node.js
-
 # Explication du Dockerfile
 
 Le Dockerfile utilise 3 étapes : 

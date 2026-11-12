@@ -1,5 +1,3 @@
-# syntax=docker/dockerfile:1
-
 FROM node:26.13.0-alpine3.24 AS development
 USER node
 WORKDIR /home/node
