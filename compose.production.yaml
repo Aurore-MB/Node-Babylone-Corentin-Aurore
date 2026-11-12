@@ -1,0 +1,67 @@
+services:
+  traefik:
+    image: traefik:v3.7.16
+    container_name: traefik
+    restart: unless-stopped
+    command:
+      - "--api.insecure=false"
+      - "--api.dashboard=false"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.letsencrypt.acme.httpchallenge.entrypoint=web"
+      - "--certificatesresolvers.letsencrypt.acme.email=test@example.com"
+      - "--certificatesresolvers.letsencrypt.acme.storage=/letsencrypt/acme.json"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+  node:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    container_name: project
+    restart: unless-stopped
+    env_file: .env.production
+    healthcheck:
+      test: ["CMD", "sh", "-c", "curl -f http://localhost:8000/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    labels:
+      - traefik.enable=true
+      # Production domain (HTTPS)
+      - traefik.http.routers.node-https.rule=Host(`app.example.com`)
+      - traefik.http.routers.node-https.entrypoints=websecure
+      - traefik.http.routers.node-https.tls=true
+      - traefik.http.routers.node-https.tls.certresolver=letsencrypt
+      - traefik.http.routers.node-https.service=node-service
+      # Production domain (HTTP -> HTTPS redirect)
+      - traefik.http.routers.node-http-redirect.rule=Host(`app.example.com`)
+      - traefik.http.routers.node-http-redirect.entrypoints=web
+      - traefik.http.routers.node-http-redirect.middlewares=redirect-to-https
+      - traefik.http.routers.node-http-redirect.service=node-service
+      # Local development (localhost)
+      - traefik.http.routers.node-local.rule=Host(`localhost`)
+      - traefik.http.routers.node-local.entrypoints=web
+      - traefik.http.routers.node-local.service=node-service
+      # Service configuration
+      - traefik.http.services.node-service.loadbalancer.server.port=8000
+      # Middleware for HTTPS redirect
+      - traefik.http.middlewares.redirect-to-https.redirectscheme.scheme=https
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 512M
