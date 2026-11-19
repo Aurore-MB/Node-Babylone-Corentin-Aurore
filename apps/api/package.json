@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "Application métier écrite avec @node-project/framework",
   "private": true,
+  "scripts": {
+    "build": "rolldown -c",
+    "start": "node dist/index.js",
+    "dev": "tsx watch src/index.ts"
+  },
   "dependencies": {
     "@node-project/framework": "*"
   }

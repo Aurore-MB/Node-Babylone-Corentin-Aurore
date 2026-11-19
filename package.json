@@ -2,16 +2,15 @@
   "name": "node-project",
   "version": "1.0.0",
   "description": "Node Project by Bab, Cor and Aur",
-  "main": "dist/index.js",
   "workspaces": [
     "apps/*",
     "packages/*"
   ],
   "scripts": {
-    "build": "rolldown -c",
+    "build": "npm run build -w @node-project/api",
     "typecheck": "tsc --noEmit",
-    "start": "node dist/index.js",
-    "dev": "tsx watch src/index.ts"
+    "start": "npm run start -w @node-project/api",
+    "dev": "npm run dev -w @node-project/api"
   },
   "keywords": [],
   "author": "",

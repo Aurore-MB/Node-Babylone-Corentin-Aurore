@@ -13,7 +13,7 @@ RUN apk add --no-cache curl
 USER node
 WORKDIR /home/node
 
-COPY --from=build --chown=node:node /home/node/dist /home/node/dist
+COPY --from=build --chown=node:node /home/node/apps/api/dist /home/node/dist
 COPY --from=build --chown=node:node /home/node/package*.json /home/node/
 RUN npm install --omit=dev
 
