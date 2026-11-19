@@ -1,0 +1,9 @@
+{
+  "name": "@node-project/api",
+  "version": "1.0.0",
+  "description": "Application métier écrite avec @node-project/framework",
+  "private": true,
+  "dependencies": {
+    "@node-project/framework": "*"
+  }
+}
