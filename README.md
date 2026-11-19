@@ -27,11 +27,12 @@ Le projet utilise Docker et Compose pour déployer l'application Node.js et Type
 
 # Etape de lancement du projet 
 
-1. Cloner le repo github 
-2. Tout lancer en une commande : docker compose -f compose.production.yaml up -d --build
-3. Attendre 10-15 secondes que Traefik démarre et le healthcheck se valide
-4. Accéder à l'url de l'app via ça : http://localhost/
-5. Pour voir les différents logs c'est avec : docker compose -f compose.production.yaml logs -f
+1. Cloner le repo github
+2. Créer le fichier d'environnement : cp .env.example .env.production
+3. Tout lancer en une commande : docker compose -f compose.production.yaml up -d --build
+4. Attendre 10-15 secondes que Traefik démarre et le healthcheck se valide
+5. Accéder à l'url de l'app via ça : http://localhost/
+6. Pour voir les différents logs c'est avec : docker compose -f compose.production.yaml logs -f
 
 - NB: pas besoin de `npm install` ou `npm run build` en local parce que Docker gère tout déjà
 
