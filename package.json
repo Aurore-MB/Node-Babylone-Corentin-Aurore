@@ -2,23 +2,25 @@
   "name": "node-project",
   "version": "1.0.0",
   "description": "Node Project by Bab, Cor and Aur",
+  "private": true,
+  "type": "module",
   "workspaces": [
-    "apps/*",
-    "packages/*"
+    "packages/*",
+    "apps/*"
   ],
   "scripts": {
     "build": "npm run build -w @node-project/api",
     "typecheck": "tsc --noEmit",
-    "start": "npm run start -w @node-project/api",
-    "dev": "npm run dev -w @node-project/api"
+    "test": "npm run test -w @node-project/framework",
+    "test:coverage": "npm run test:coverage -w @node-project/framework",
+    "dev": "npm run dev -w @node-project/api",
+    "start": "npm run start -w @node-project/api"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "devDependencies": {
-    "@types/node": "^20.19.43",
+    "@types/node": "^24.0.0",
     "rolldown": "^1.3.3",
     "tsx": "^4.23.15",
-    "typescript": "^5.3.3"
+    "typescript": "^5.9.3",
+    "vitest": "^5.1.1"
   }
 }

@@ -1,14 +1,22 @@
 {
   "name": "@node-project/api",
   "version": "1.0.0",
-  "description": "Application métier écrite avec @node-project/framework",
+  "description": "Application Carnet de Voyage écrite avec @node-project/framework",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "rolldown -c",
     "start": "node dist/index.js",
     "dev": "tsx watch src/index.ts"
   },
   "dependencies": {
-    "@node-project/framework": "*"
+    "@node-project/framework": "*",
+    "bcryptjs": "^3.0.3",
+    "jsonwebtoken": "^9.0.3",
+    "pg": "^8.23.1"
+  },
+  "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/pg": "^8.23.1"
   }
 }

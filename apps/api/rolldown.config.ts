@@ -5,6 +5,7 @@ export default defineConfig({
   platform: 'node',
   output: {
     file: 'dist/index.js',
-    format: 'cjs',
+    format: 'esm',
+    sourcemap: true,
   },
 });
