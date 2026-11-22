@@ -15,7 +15,10 @@ export const createKernel = (config: AppConfig): Kernel => { // créer l'objet K
             res.end('Hello from Babylone, Corentin and Aurora!');
         });
 
-        await new Promise<void>((resolve) => {
+        await new Promise<void>((resolve, reject) => {
+            server?.once('error', (error) => {
+                reject(error)
+            });
             server?.listen(config.port, config.host, () => {
                 resolve();
                 console.log(`listening on http://${config.host}:${config.port}`);
