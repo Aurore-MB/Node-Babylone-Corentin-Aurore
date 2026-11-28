@@ -1,4 +1,4 @@
-import type { AppConfig } from './types.ts';
+import type { AppConfig, ApiErrorResponse } from './types.ts';
 import http from 'node:http'
 import { Router } from './router.ts';
 
@@ -30,8 +30,22 @@ export const createKernel = (config: AppConfig): Kernel => { // créer l'objet K
 
             const method = req.method ?? "GET"; // si req.method n'existe pas alors on lui donne "GET" par défaut
             const url = req.url ?? "/"; // si req.url est n'existe pas alors on lui donne "/" par défaut
+            const parsedURL = new URL(url, "http://localhost");
 
-            const endpoint = Router.search(method, url);
+            const endpoint = Router.search(method, parsedURL.pathname);
+            
+            // SI LA ROUTE RECHERCHEE N'EXISTE PAS
+            // ON RENVOIE UNE ERREUR 404 ROUTE NOT FOUND
+            if (endpoint === undefined) {
+                const errorResponse: ApiErrorResponse = {"error": {
+                    status: 404,
+                    message: "Route not found",
+                    code: "NOT_FOUND"
+                }};
+                sendJSON(res, errorResponse.error.status, errorResponse) // on envoie le status puis l'error en entière. 
+                return;
+            }
+
             res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' });
             res.end('Hello from Babylone, Corentin and Aurora!');
         });
