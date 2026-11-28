@@ -2,6 +2,21 @@ import type { AppConfig } from './types.ts';
 import http from 'node:http'
 import { Router } from './router.ts';
 
+// La fonction le renvoie rien car elle agit direct sur la response
+const sendJSON = (res: http.ServerResponse, status: number, body: unknown, headers: Record<string, string> = {}): void => {
+    if (res.headersSent) { // SI la réponse est déjà partie, on sort
+        return;
+    }
+    
+    const bodyInJSON = JSON.stringify(body); // convertir l'objet (le body) en string format JSON.
+
+    const bodyLenght = Buffer.byteLength(bodyInJSON); // pas .lenght directement car certains caractères font + de 1 octet et ça lenght ne le voit pas. la réponse serait alors coupée. 
+
+    res.writeHead(status, {"content-length": bodyLenght, "content-type": "application/json", ...headers }) // envoyer les en-tetes. ...headers copie chaque entrée de headers.
+    
+    res.end(bodyInJSON) // envoyer le body
+}
+
 export interface Kernel {
     start: () => Promise<void>; // fonction pour démarrer le serveur (renvoie une promesse)
     stop: () => Promise<void>; // fonction pour arreter le serveur (renvoie une promesse)
